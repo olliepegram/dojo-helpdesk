@@ -1,4 +1,8 @@
+import Link from 'next/link';
+
 async function getTickets() {
+	// imitate delay
+	await new Promise((resolve) => setTimeout(resolve, 1000));
 	const res = await fetch('http://localhost:4000/tickets', {
 		// if we do revalidate 30 it will re-fetch in 30 seconds and show updated endpoint
 		next: {
@@ -19,11 +23,13 @@ async function TicketList() {
 					key={ticket.id}
 					className='card my-5'
 				>
-					<h3>{ticket.title}</h3>
-					<p>{ticket.body.slice(0, 200)}...</p>
-					<div className={`pill ${ticket.priority}`}>
-						{ticket.priority} priority
-					</div>
+					<Link href={`tickets/${ticket.id}`}>
+						<h3>{ticket.title}</h3>
+						<p>{ticket.body.slice(0, 200)}...</p>
+						<div className={`pill ${ticket.priority}`}>
+							{ticket.priority} priority
+						</div>
+					</Link>
 				</div>
 			))}
 			{tickets.length === 0 && (
